@@ -1,10 +1,21 @@
 {
-  "name": "my-first-vibe-coding",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "forme",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "무심코 흘려보내는 짧은 시간을, 나를 위한 시간으로 바꿔주는 앱",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "private": true
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.8"
+  }
 }

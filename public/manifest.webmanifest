@@ -1,0 +1,25 @@
+{
+  "name": "forMe · 나를 위한 작은 휴식",
+  "short_name": "forMe",
+  "description": "무심코 흘려보내는 짧은 시간을, 나를 위한 시간으로 바꿔주는 앱.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#faf6ec",
+  "theme_color": "#cfe7f5",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
