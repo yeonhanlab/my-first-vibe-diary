@@ -320,23 +320,6 @@ p {
   font-size: calc(var(--bubble-size, 70px) * 0.42);
   line-height: 1;
 }
-.bubble__label {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: normal;
-  word-break: keep-all;
-  overflow-wrap: anywhere;
-  text-align: center;
-  line-height: 1.25;
-  font-size: 0.7rem;
-  color: var(--ink-soft);
-  background: rgba(255, 253, 248, 0.7);
-  padding: 3px 8px;
-  border-radius: 10px;
-  max-width: min(42vw, 128px);
-}
 
 .bubble--add .bubble__bob {
   background: rgba(255, 253, 248, 0.55);

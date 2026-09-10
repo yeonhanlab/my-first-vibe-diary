@@ -71,7 +71,6 @@ export default function FloatingActivities({ profile, items, onPick, onAdd, onPr
                   aria-label={it.name}
                 >
                   <span className="bubble__emoji">{it.icon}</span>
-                  <span className="bubble__label">{it.name}</span>
                 </button>
               </div>
             </div>
