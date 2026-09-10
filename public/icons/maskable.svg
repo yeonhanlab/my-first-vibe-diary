@@ -1,13 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="forMe">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="forMe 새싹">
   <defs>
-    <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#d7ecf8" />
-      <stop offset="0.55" stop-color="#e4f1ec" />
-      <stop offset="1" stop-color="#cfe9c6" />
+    <linearGradient id="forme-bg-m" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fbf6ea" />
+      <stop offset="1" stop-color="#e7f2d8" />
     </linearGradient>
   </defs>
-  <rect width="512" height="512" fill="url(#sky2)" />
-  <circle cx="256" cy="256" r="70" fill="#fdfaf2" stroke="#f0c9b8" stroke-width="9" />
-  <circle cx="256" cy="247" r="23" fill="#f4b8a6" />
-  <path d="M218 302c6-23 20-35 38-35s32 12 38 35z" fill="#f4b8a6" />
+  <rect width="512" height="512" fill="url(#forme-bg-m)" />
+
+  <g transform="translate(256 262) scale(0.78)">
+    <path d="M0 150 L 0 -14" fill="none" stroke="#5f9a54" stroke-width="24" stroke-linecap="round" />
+    <path d="M-10 34 C -80 40 -140 6 -160 -66 C -86 -88 -18 -50 6 16 Z" fill="#78b869" />
+    <path d="M10 0 C 72 -14 128 -56 146 -124 C 78 -142 16 -98 0 -34 Z" fill="#9bd08b" />
+  </g>
 </svg>
