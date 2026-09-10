@@ -55,10 +55,6 @@ export default function Login() {
             </>
           )}
         </h1>
-        <p className="subtle" style={{ marginTop: 10 }}>
-          기록은 이제 계정에 안전하게 저장돼요.
-        </p>
-
         <div className="field" style={{ textAlign: 'left', marginTop: 24 }}>
           <div className="field__label">이메일</div>
           <input
