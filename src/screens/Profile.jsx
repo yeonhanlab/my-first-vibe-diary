@@ -1,11 +1,13 @@
 import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../context/AppContext.jsx'
+import { useAuth } from '../context/AuthContext.jsx'
 import BackButton from '../components/BackButton.jsx'
 import { fileToProfileImage } from '../lib/image.js'
 
 export default function Profile() {
   const { profile, saveProfile, records } = useApp()
+  const { user, signOut } = useAuth()
   const navigate = useNavigate()
   const fileRef = useRef(null)
 
@@ -74,6 +76,17 @@ export default function Profile() {
       <div className="spacer" style={{ minHeight: 24 }} />
       <button className="btn btn--primary btn--full" onClick={save}>
         {saved ? '저장했어요' : '저장하기'}
+      </button>
+
+      <button
+        className="btn btn--text btn--full"
+        onClick={async () => {
+          await signOut()
+          navigate('/login', { replace: true })
+        }}
+        style={{ marginTop: 8 }}
+      >
+        로그아웃{user?.email ? ` · ${user.email}` : ''}
       </button>
     </div>
   )

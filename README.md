@@ -28,7 +28,7 @@ pnpm preview      # 빌드 결과 로컬 미리보기
 
 - **React 18 + Vite 5**
 - **react-router-dom v6** — 화면 흐름 라우팅
-- **백엔드 없음.** 프로필·활동·기록은 모두 브라우저 `localStorage`에 저장됩니다.
+- **Supabase** (PostgreSQL + 인증) — 프로필·활동·기록을 계정에 저장. 이메일+비밀번호 로그인. `localStorage`는 오프라인 캐시로만 사용. 설정은 [`SUPABASE_SETUP.md`](./SUPABASE_SETUP.md) 참고.
 - **모바일 우선** 디자인
 - **PWA 준비** — `public/manifest.webmanifest` 포함. 프로덕션 빌드에서 `public/sw.js`가 있으면 `src/main.jsx`가 자동 등록합니다(아이콘·서비스 워커는 아직 SVG 플레이스홀더 / 미포함).
 
@@ -37,10 +37,12 @@ pnpm preview      # 빌드 결과 로컬 미리보기
 ```
 src/
   main.jsx              앱 진입점, 라우터/컨텍스트 마운트, (프로덕션) SW 등록
-  App.jsx               라우트 정의, 프로필/세션 가드
-  context/AppContext.jsx  profile · activities · records · 진행 중인 session 상태
+  App.jsx               라우트 정의, 로그인/프로필/세션 가드
+  context/AuthContext.jsx  로그인 세션 상태, signUp / signIn / signOut
+  context/AppContext.jsx  profile · activities · records (Supabase 읽기/쓰기, 낙관적 업데이트) · 진행 중인 session 상태
   lib/
-    storage.js           localStorage 로드/저장 헬퍼
+    supabase.js          Supabase 클라이언트 (환경변수에서 생성)
+    storage.js           오프라인 캐시 (사용자별 localStorage) + uid 생성기
     constants.js         기본 활동, 아이콘 세트, 카테고리, 시간, 감정, 마무리 문구
     date.js              달력 날짜 유틸
     image.js             프로필 사진 리사이즈(정사각형 축소)
@@ -48,6 +50,7 @@ src/
     FloatingActivities.jsx  중앙 프로필 + 주변을 떠다니는 활동 비눗방울
     IconPicker.jsx / CategoryChips.jsx / BackButton.jsx
   screens/
+    Login.jsx            이메일+비밀번호 로그인 / 회원가입
     Onboarding.jsx       첫 실행 프로필 설정(이름 + 선택 사진)
     Home.jsx             "오늘은 어떻게 기분전환을 해볼까요?" — 활동 랜덤 표시
     AllActivities.jsx    전체 활동 목록 / 편집 진입

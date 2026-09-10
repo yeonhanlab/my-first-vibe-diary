@@ -1,6 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useApp } from './context/AppContext.jsx'
+import { useAuth } from './context/AuthContext.jsx'
 
+import Login from './screens/Login.jsx'
 import Onboarding from './screens/Onboarding.jsx'
 import Home from './screens/Home.jsx'
 import AllActivities from './screens/AllActivities.jsx'
@@ -13,6 +15,15 @@ import MoodAfter from './screens/MoodAfter.jsx'
 import CalendarScreen from './screens/CalendarScreen.jsx'
 import Profile from './screens/Profile.jsx'
 
+// 서버 응답을 기다리는 짧은 순간에 보여줄 화면.
+function Splash() {
+  return (
+    <div className="screen screen--sky" style={{ justifyContent: 'center', alignItems: 'center' }}>
+      <div className="done__mark">🫧</div>
+    </div>
+  )
+}
+
 // 휴식 흐름 도중 새로고침 등으로 session 이 사라지면 조용히 첫 화면으로 돌려보낸다.
 function RequireSession({ children }) {
   const { session } = useApp()
@@ -20,21 +31,44 @@ function RequireSession({ children }) {
   return children
 }
 
+// 로그인 + 프로필이 모두 있어야 앱 본문으로 들어갈 수 있다.
 function RequireProfile({ children }) {
-  const { profile } = useApp()
+  const { status } = useAuth()
+  const { profile, loaded } = useApp()
+  if (status === 'loading') return <Splash />
+  if (status !== 'authed') return <Navigate to="/login" replace />
+  if (!loaded) return <Splash />
   if (!profile) return <Navigate to="/welcome" replace />
   return children
 }
 
 export default function App() {
-  const { profile } = useApp()
+  const { status } = useAuth()
+  const { profile, loaded } = useApp()
+
+  if (status === 'loading') return <Splash />
 
   return (
     <div className="app-frame">
       <Routes>
         <Route
+          path="/login"
+          element={status === 'authed' ? <Navigate to="/" replace /> : <Login />}
+        />
+
+        <Route
           path="/welcome"
-          element={profile ? <Navigate to="/" replace /> : <Onboarding />}
+          element={
+            status !== 'authed' ? (
+              <Navigate to="/login" replace />
+            ) : !loaded ? (
+              <Splash />
+            ) : profile ? (
+              <Navigate to="/" replace />
+            ) : (
+              <Onboarding />
+            )
+          }
         />
 
         <Route path="/" element={<RequireProfile><Home /></RequireProfile>} />
