@@ -165,7 +165,9 @@ export function AppProvider({ children }) {
       loaded,
       syncError,
 
-      saveProfile(next) {
+      // 온보딩에서 이 결과를 기다렸다가(성공해야) 홈으로 넘어간다.
+      // 실패하면 에러를 그대로 throw 해서 화면이 원인을 보여줄 수 있게 한다.
+      async saveProfile(next) {
         const merged = {
           name: '',
           photo: null,
@@ -175,15 +177,20 @@ export function AppProvider({ children }) {
         }
         const prev = profile
         setProfileState(merged)
-        optimistic(
-          () => setProfileState(prev),
-          () =>
-            supabase.from('profiles').upsert({
-              user_id: userId,
-              name: merged.name,
-              photo: merged.photo,
-            }),
-        )
+        try {
+          const { error } = await supabase.from('profiles').upsert({
+            user_id: userId,
+            name: merged.name,
+            photo: merged.photo,
+          })
+          if (error) throw error
+          setSyncError(null)
+        } catch (e) {
+          setProfileState(prev)
+          setSyncError(e)
+          console.warn('[forMe] 프로필 저장 실패:', e?.message ?? e)
+          throw e
+        }
       },
 
       addActivity({ name, icon, categories }) {

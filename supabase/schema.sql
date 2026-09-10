@@ -76,6 +76,16 @@ create policy "records are self-owned"
   with check (auth.uid() = user_id);
 
 -- ─────────────────────────────────────────────────────────────
+-- 역할 권한(GRANT)
+-- RLS 는 "어떤 행" 인지를 가리고, GRANT 는 "테이블을 만질 수 있는지" 를 가린다.
+-- Supabase 가 보통 자동으로 걸어주지만, 안 걸리면 'permission denied for table' 이 난다.
+-- ─────────────────────────────────────────────────────────────
+grant usage on schema public to anon, authenticated;
+grant select, insert, update, delete on public.profiles   to anon, authenticated;
+grant select, insert, update, delete on public.activities to anon, authenticated;
+grant select, insert, update, delete on public.records    to anon, authenticated;
+
+-- ─────────────────────────────────────────────────────────────
 -- updated_at 자동 갱신 (profiles 전용)
 -- ─────────────────────────────────────────────────────────────
 create or replace function public.touch_updated_at()

@@ -11,24 +11,35 @@ export default function Onboarding() {
   const [name, setName] = useState('')
   const [photo, setPhoto] = useState(null)
   const [busy, setBusy] = useState(false)
+  const [error, setError] = useState(null)
 
   async function onFile(e) {
     const file = e.target.files?.[0]
     if (!file) return
     setBusy(true)
+    setError(null)
     try {
       setPhoto(await fileToProfileImage(file))
-    } catch {
-      /* 조용히 무시 */
+    } catch (err) {
+      setError(err?.message || '사진을 불러오지 못했어요.')
     } finally {
       setBusy(false)
       e.target.value = ''
     }
   }
 
-  function start() {
-    saveProfile({ name: name.trim() || '나', photo })
-    navigate('/', { replace: true })
+  async function start() {
+    if (busy) return
+    setBusy(true)
+    setError(null)
+    try {
+      await saveProfile({ name: name.trim() || '나', photo })
+      navigate('/', { replace: true })
+    } catch (err) {
+      // 서버 저장이 실패하면 여기서 멈추고 원인을 보여준다 (예: RLS 정책 없음).
+      setError(err?.message || String(err))
+      setBusy(false)
+    }
   }
 
   return (
@@ -73,8 +84,16 @@ export default function Onboarding() {
       </div>
 
       <div className="spacer" />
-      <button className="btn btn--primary btn--full" onClick={start}>
-        시작하기
+      {error && (
+        <p
+          className="subtle center-block"
+          style={{ marginBottom: 10, color: '#c0392b', whiteSpace: 'pre-wrap' }}
+        >
+          {error}
+        </p>
+      )}
+      <button className="btn btn--primary btn--full" onClick={start} disabled={busy}>
+        {busy ? '저장 중…' : '시작하기'}
       </button>
       <p className="subtle center-block" style={{ marginTop: 12, fontSize: '0.8rem' }}>
         입력한 내용은 이 기기에만 저장돼요.
